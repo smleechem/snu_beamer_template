@@ -30,15 +30,6 @@ sorting=none
 \newcommand{\logofileDark}{figures/snu_logo_white.jpg}
 \newcommand{\logofile}{\logofileLight}
 
-\addtobeamertemplate{frametitle}{}{
-  \ifshowframelogo
-    \begin{tikzpicture}[remember picture,overlay]
-      \node[anchor=north east] at ([xshift=-\logomargin,yshift=-\logomargin]current page.north east)
-        {\includegraphics[height=\logoheight]{\logofile}};
-    \end{tikzpicture}%
-  \fi
-}
-
 \newenvironment{standout}[2][]{%
   \begingroup
   \renewcommand{\logofile}{\logofileDark}%
@@ -69,50 +60,35 @@ sorting=none
 
 \usetikzlibrary{calc} 
 \newcommand{\Closure}[2]{%
-    \begin{tikzpicture}[remember picture,overlay]
-        \usebeamercolor{palette primary}
-        \fill[bg] (current page.north west)
-                           rectangle (current page.south east);
-
-        \pgfmathsetlengthmacro{\BoxW}{0.54\paperwidth}
-        \pgfmathsetlengthmacro{\BoxH}{0.45\paperheight}
-        \pgfmathsetlengthmacro{\BoxX}{0.40\paperwidth}
-        \pgfmathsetlengthmacro{\BoxY}{0.86\paperheight}
-
-        \coordinate (TitleNW) at ($(current page.south west)+(\BoxX,\BoxY)$);
-        \coordinate (TitleSW) at ($(TitleNW)+(0,-\BoxH)$);
-        \coordinate (TitleSE) at ($(TitleNW)+(\BoxW,-\BoxH)$);
-        
-        \fill[snublue] (TitleNW) rectangle (TitleSE);
-        \draw (TitleNW) rectangle (TitleSE);
-        
-        \node[
-            anchor=center,
-            align=left,
-            text=white,
-            font=\usebeamerfont{title},
-            text width=\BoxW-0.06\paperwidth
-        ] at ($(TitleNW)!0.5!(TitleSE)$)
-        {#1};
-        
-        \node[
-            anchor=west,
-            align=left,
-            text=snumidblue,
-            font=\usebeamerfont{author},
-            text width=\BoxW-0.06\paperwidth
-        ] at ($(TitleSW)+(0.035\paperwidth,0.09\paperheight)$)
-        {#2};
-
-    \end{tikzpicture}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \pgfmathsetlengthmacro{\BoxW}{0.54\paperwidth}
+    \pgfmathsetlengthmacro{\BoxH}{0.45\paperheight}
+    \pgfmathsetlengthmacro{\BoxX}{0.40\paperwidth}
+    \pgfmathsetlengthmacro{\BoxY}{0.86\paperheight}
+    \coordinate (TitleNW) at ($(current page.south west)+(\BoxX,\BoxY)$);
+    \coordinate (TitleSW) at ($(TitleNW)+(0,-\BoxH)$);
+    \coordinate (TitleSE) at ($(TitleNW)+(\BoxW,-\BoxH)$);
+    \fill[snublue] (TitleNW) rectangle (TitleSE);
+    \draw (TitleNW) rectangle (TitleSE);
+    \node[anchor=center,align=left,text=white,
+          font=\usebeamerfont{title},
+          text width=\BoxW-0.06\paperwidth]
+      at ($(TitleNW)!0.5!(TitleSE)$) {#1};
+    \node[anchor=west,align=left,text=snumidblue,
+          font=\usebeamerfont{author},
+          text width=\BoxW-0.06\paperwidth]
+      at ($(TitleSW)+(0.035\paperwidth,0.09\paperheight)$) {#2};
+  \end{tikzpicture}%
 }
 
 
 \renewcommand*{\bibfont}{\scriptsize}
 \AtBeginBibliography{
-	\color{black}
-	\hypersetup{linkcolor=black,citecolor=black,urlcolor=black}%
+  \hypersetup{linkcolor=snublue,citecolor=snublue,urlcolor=snublue}%
 }
+\DeclareFieldFormat
+  [book,inbook,collection,manual,report,thesis]
+  {title}{\textcolor{snublue}{#1}\isdot}
 \DeclareFieldFormat{pages}{#1}
 \DeclareFieldFormat{pagetotal}{#1}
 \DeclareFieldFormat[article]{title}{#1\isdot}
@@ -152,10 +128,10 @@ sorting=none
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
 
-%\setbeamerfont{caption}{size=\scriptsize}
-\setbeamerfont{caption}{size=\tiny}
+%\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{caption}{size=\scriptsize}
 \setbeamerfont{caption name}{series=\bfseries}
-\setbeamercolor{caption name}{fg=structure.fg}
+\setbeamercolor{caption name}{fg=snublue}
 
 \usefonttheme{serif} 
 \setbeamerfont{title}{series=\bfseries,parent=structure}
@@ -165,21 +141,57 @@ sorting=none
 \setbeamercolor{alerted text}{fg=black}
 \setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
 \setbeamerfont{itemize/enumerate subsubbody}{size=\normalsize}
-\setbeamercolor{itemize item}{fg=structure.fg}
+\setbeamercolor{itemize item}{fg=snublue}
 \setbeamertemplate{itemize item}{\scriptsize$\blacksquare$}
 \setbeamertemplate{itemize subitem}{\scriptsize$-$}
 \setbeamertemplate{itemize subsubitem}{}
 \setbeamertemplate{enumerate item}{\footnotesize\insertenumlabel.}
 \setbeamertemplate{headline}{}
 \setbeamertemplate{navigation symbols}{}
-
-\setbeamertemplate{footline}{
-	\hfill%
-	\usebeamercolor[fg]{page number in head/foot}%
-	\usebeamerfont{page number in head/foot}%
-	\setbeamertemplate{page number in head/foot}[framenumber]%
-	\usebeamertemplate*{page number in head/foot}\kern1em\vskip3pt%
+\setbeamercolor*{framesubtitle}{fg=snumidblue,bg=white}
+\setbeamerfont{frametitle}{
+    series=\bfseries,
+    size=\Large
 }
+\setbeamerfont{framesubtitle}{
+    series=\bfseries,
+    size=\large
+}
+\setbeamertemplate{frametitle}{%
+    \vspace{1.2ex}%
+    \begin{beamercolorbox}[leftskip=0pt]{frametitle}
+        \usebeamerfont{frametitle}\hspace{-1.2em}
+        \insertframetitle\strut
+        \usebeamerfont{framesubtitle}%
+        \usebeamercolor[fg]{framesubtitle}%
+        \ \insertframesubtitle\par%
+    \end{beamercolorbox}%
+    \ifshowframelogo
+      \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=north east] at ([xshift=-\logomargin,yshift=-\logomargin]current page.north east)
+          {\includegraphics[height=\logoheight]{\logofile}};
+      \end{tikzpicture}%
+    \fi
+}
+
+\setbeamertemplate{footnote}{%
+  \tikz[remember picture,overlay]{
+    \node[anchor=south west]
+      at ([xshift=1em,yshift=0.50em]current page.south west){%
+        \begin{minipage}[t]{\dimexpr\paperwidth-2em\relax}
+          \tiny
+          \setlength{\parindent}{0pt}%
+          \parskip=0pt%
+          \leavevmode\insertfootnotemark\nobreak\hspace{0.4em}\ignorespaces\insertfootnotetext\unskip
+        \end{minipage}%
+      };
+  }%
+}
+
+\makeatletter
+\setbeamertemplate{footnoterule}{}
+\def\footnoterule{}
+\makeatother
 
 \newcommand{\cbox}[2][\linewidth]{%
   \setbeamercolor{coloredboxstuff}{bg=snublue!12, fg=black}%
@@ -189,7 +201,7 @@ sorting=none
 }
 \newcommand{\widesep}{\addtolength{\itemsep}{10pt}}
 
-\title{SNU Beamer Template}
+\title{SNU beamer template}
 \date{\today}
 \institute{Seoul National University}
 \author{\textbf{Gildong Hong}*}
@@ -205,69 +217,63 @@ sorting=none
 	\titlepage
 \end{standout}
 
-\begin{frame}{Title}
+\begin{frame}{This is a title}
 	\cbox{%
-		Target distribution $\pi(C) \propto \exp [\beta(\mu N-E(C))]$
-	}
-	\vspace{.8cm}
-	Using a Metropolis-Hastings scheme with uniform proposal over sites:
+	This is a colorbox.
+}
+\vspace{.8cm}
+Using a Metropolis-Hastings scheme with uniform proposal over sites:
 
-	\begin{itemize}
-		\vspace{.25cm}
-		\widesep
-		\item<2-> Insertion proposal: choose one empty site uniformly and attempt ($N \rightarrow N+1$)
-		$$
-p_{\mathrm{ins}}=\min\!\left(1,\; e^{\beta \mu}\,\frac{V-N}{N+1}\right)
-$$
-		\item<3-> Deletion proposal: choose one occupied site uniformly and attempt ($N \rightarrow N-1$)
-		$$
-		p_{\mathrm{del}}=\min\!\left(1,\; e^{-\beta \mu}\,\frac{N}{V-N+1}\right)
-		$$
-	\end{itemize}
+\begin{itemize}
+	\vspace{.25cm}
+	\widesep
+	\item Insertion proposal: choose one empty site uniformly and attempt ($N \rightarrow N+1$)
+	$$
+	p_{\mathrm{ins}}=\min\!\left(1,\; e^{\beta \mu}\,\frac{V-N}{N+1}\right)
+	$$
+	\item Deletion proposal: choose one occupied site uniformly and attempt ($N \rightarrow N-1$)
+	$$
+	p_{\mathrm{del}}=\min\!\left(1,\; e^{-\beta \mu}\,\frac{N}{V-N+1}\right)
+	$$
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Figure}
-	\begin{figure}[t]
+\begin{frame}{This is a title}{And a Subtitle}
+	\begin{columns}
+	\begin{column}{.5\textwidth}
+	\begin{table}
 		\centering
-		\includegraphics[width=1.0\linewidth]{figures/fig1.jpg}
-		\caption{Overview of molecular modeling of charged interfacial materials systems.\cite{jeong2023predictive}}
-	\end{figure}  
-\end{frame}
-
-\begin{frame}{Two Columns}
-	\begin{columns}[T]
-	  \begin{column}{.5\textwidth}
-		\begin{table}
-		  \centering
-		  %\footnotesize
-		  \Large
-		  \begin{tabular}{l r}
+		%\footnotesize
+		\Large
+		\sisetup{table-number-alignment = center, round-mode=places, round-precision=4}
+		\begin{tabular}{l S}
 			\hline
-			\textbf{Alphabet} & \textbf{Number} \\
+			\textbf{Ion} & {\textbf{Radius (\si{\angstrom})}} \\
 			\hline
-			$\mathrm{A}$ & 1 \\
-			$\mathrm{B}$ & 2 \\
-			$\mathrm{C}$ & 3 \\
-			$\mathrm{D}$ & 4 \\
+			$\mathrm{Na^{+}}$  & 1.472 \\
+			$\mathrm{K^{+}}$   & 1.778 \\
+			$\mathrm{Cl^{-}}$  & 1.808 \\
+			$\mathrm{Br^{-}}$  & 1.973 \\
 			\hline
-		  \end{tabular}
-		  \caption{Table}
-		\end{table}
-	  \end{column}
-	  \begin{column}{.5\textwidth}
-		\begin{figure}
-		  \centering
-		  \includegraphics[width=\linewidth]{figures/fig2.jpg}
-		  \caption{Seoul National University}
-		\end{figure}
-	  \end{column}
+		\end{tabular}
+		\caption{This is a table.\footnote{This is a footnote.}}
+	\end{table}
+	\end{column}
+	\begin{column}{.5\textwidth}
+		\begin{figure}[t]
+			\centering
+			\includegraphics[width=1.0\linewidth]{figures/fig1.jpg}
+			\caption{This is a figure.\cite{jeong2023predictive}}
+		\end{figure}  	
+	\end{column}
 	\end{columns}
 \end{frame}
 
 \begin{standout}[c]{Takeaways}
 	\begin{itemize}
-		\item Item A
-		\item Item B
+		\item Item 1
+		\item<2-> Item 2
+		\item<3-> Item 3
 	\end{itemize}
 \end{standout}
 
@@ -278,10 +284,16 @@ $$
 \end{frame}
 \endgroup
 
+{
+\usebackgroundtemplate{%
+  \includegraphics[width=\paperwidth,height=\paperheight]{figures/background.png}%
+}
+
 \begin{frame}
 	\Closure
 		{Thank you}{Questions?}
 \end{frame}
-
+\usebackgroundtemplate{}
+}
 
 \end{document}
